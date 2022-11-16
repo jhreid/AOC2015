@@ -5,13 +5,22 @@ fn main() {
         .expect("Should have been able to read the file.");
 
     let directions= day_3_input.as_str();
-    let mut current_pos = Pos{x: 0, y: 0};
+    let mut santa_pos = Pos{x: 0, y: 0};
+    let mut robo_pos = Pos{x: 0, y: 0};
     let mut houses: HashMap<Pos, u8> = HashMap::new();
 
-    for direction in directions.chars() {
-        current_pos = process_direction(direction, current_pos);
-        let count = houses.entry(current_pos).or_insert(0);
-        *count += 1;
+    houses.insert(santa_pos, 1);
+
+    for (index, direction) in directions.chars().enumerate() {
+        if index % 2 == 0 {
+            santa_pos = process_direction(direction, santa_pos);
+            let santa_count = houses.entry(santa_pos).or_insert(0);
+            *santa_count += 1;
+        } else {
+            robo_pos = process_direction(direction, robo_pos);
+            let robo_count = houses.entry(robo_pos).or_insert(0);
+            *robo_count += 1;
+        }
     }
     println!("Houses visited: {}", houses.len());
 }
